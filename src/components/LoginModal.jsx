@@ -42,22 +42,6 @@ export default function LoginModal() {
       setAvatarChanged(false);
     }, 400);
   }
-  // function changeAvatar(direction) {
-  //   if (direction === -1) {
-  //     const nextPosition = selectedAvatar - 1;
-  //     if (nextPosition < 0) setSelectedAvatar(avatars.length - 1);
-  //     else setSelectedAvatar(nextPosition);
-  //   }
-  //   if (direction === 1) {
-  //     const nextPosition = selectedAvatar + 1;
-  //     if (nextPosition > avatars.length - 1) setSelectedAvatar(0);
-  //     else setSelectedAvatar(nextPosition);
-  //   }
-  //   setAvatarChanged(true);
-  //   setTimeout(() => {
-  //     setAvatarChanged(false);
-  //   }, 400);
-  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
