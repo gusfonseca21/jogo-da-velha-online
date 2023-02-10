@@ -50,6 +50,11 @@ body {
   font-style: normal;
 }
 
+label {
+  font-family: "Open-Sans";
+  color: #fff;
+}
+
 @keyframes gradient {
   0% {
     background-position: 0% 0%;

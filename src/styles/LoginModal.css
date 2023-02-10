@@ -34,15 +34,132 @@
 
 .heading {
   text-align: center;
-  color: #add8e6;
+  color: #fff;
   font-family: "Open-Sans", sans-serif;
   font-weight: bolder;
   font-size: xx-large;
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 1.4rem;
   background-color: #1e272e;
-  height: 400px;
-  width: 260px;
+  height: 600px;
+  width: 400px;
   border: 1px solid #8fbcbb;
+  padding: 10px;
+}
+
+.avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-choice {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-buttons {
+  background: "none";
+  border: "none";
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.arrow-buttons:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.arrow-buttons:active {
+  transform: translateX(5%);
+  transition: all 0.3s ease;
+}
+
+.avatar-image-div {
+  border-radius: 50%;
+  overflow: hidden;
+  height: 14rem;
+  width: 14rem;
+  border: 1px solid #8fbcbb;
+  background-color: black;
+}
+
+.avatar-image {
+  height: 15rem;
+  width: 15rem;
+  object-fit: cover;
+  opacity: 1;
+  transition: all 400ms ease-in-out;
+}
+
+.avatar-image.transition {
+  opacity: 0;
+}
+
+.form-divs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.form input {
+  height: 2rem;
+  width: 20rem;
+  font-size: 1.5rem;
+  text-align: center;
+  background-color: #4b5258;
+  border: none;
+  color: white;
+  box-sizing: border-box;
+}
+
+.form input:focus {
+  outline: none;
+  box-shadow: none;
+  border: 2px solid #8fbcbb;
+}
+
+.form input::placeholder {
+  color: #cacaca;
+}
+
+button {
+  font-size: 2rem;
+  font-weight: bolder;
+  background-color: #8fbcbb;
+  border: 1px solid #4b5258;
+  border-radius: 4px;
+  color: #4b5258;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: relative;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+}
+
+button:hover {
+  background-color: #4b5258;
+  color: white;
+  cursor: pointer;
 }
