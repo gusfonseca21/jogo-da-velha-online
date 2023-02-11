@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import chevronRight from "../assets/icons/chevron-right.png";
 import chevronLeft from "../assets/icons/chevron-left.png";
 import { mao, stalin, ho, kim, khaled, rosa } from "../assets/images/avatars";
 
 import "../styles/LoginModal.css";
 
-import io from "socket.io-client";
-
-const socket = io.connect("http://localhost:3000");
+import { socket } from "../socket";
 
 const avatars = [mao, stalin, ho, kim, khaled, rosa];
 
@@ -18,7 +16,6 @@ export default function LoginModal() {
   );
   const [avatarChanged, setAvatarChanged] = useState(false);
   const [name, setName] = useState("");
-  const [code, setCode] = useState("");
 
   useEffect(() => {
     setTimeout(() => {
@@ -46,10 +43,9 @@ export default function LoginModal() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    socket.emit("join_room", { room: code, name });
+    socket.emit("join", { name, selectedAvatar });
     setLoginModal(false);
   };
-  console.log(loginModal);
 
   return (
     <>
@@ -83,18 +79,6 @@ export default function LoginModal() {
                 required
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-              />
-            </div>
-            <div className='form-divs'>
-              <label htmlFor='code'>Código da sala</label>
-              <input
-                id='code'
-                minLength={2}
-                maxLength={15}
-                type='text'
-                required
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
               />
             </div>
             <button type='submit'>Começar</button>

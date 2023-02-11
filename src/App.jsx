@@ -1,3 +1,4 @@
+import Chat from "./components/Chat";
 import GameBoard from "./components/GameBoard";
 import LoginModal from "./components/LoginModal";
 import "./styles/App.css";
@@ -7,6 +8,7 @@ function App() {
     <div className='App'>
       <LoginModal />
       <GameBoard />
+      <Chat />
     </div>
   );
 }
