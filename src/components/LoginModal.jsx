@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import chevronRight from "../assets/icons/chevron-right.png";
 import chevronLeft from "../assets/icons/chevron-left.png";
-import { mao, stalin, ho, kim, khaled, rosa } from "../assets/images/avatars";
 
 import "../styles/LoginModal.css";
 
 import { socket } from "../socket";
+import { Avatar } from ".";
+import { PlayersContext } from "../context/PlayersConxtext";
 
-const avatars = [mao, stalin, ho, kim, khaled, rosa];
+export default function LoginModal({ loginModal, setLoginModal }) {
+  const playersCtx = useContext(PlayersContext);
 
-export default function LoginModal() {
-  const [loginModal, setLoginModal] = useState(false);
+  const avatars = playersCtx.avatars;
+
   const [selectedAvatar, setSelectedAvatar] = useState(
     Math.floor(Math.random() * avatars.length)
   );
   const [avatarChanged, setAvatarChanged] = useState(false);
   const [name, setName] = useState("");
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoginModal(true);
-    }, 200);
-  }, []);
 
   function changeAvatar(direction) {
     let nextPosition;
@@ -57,12 +53,11 @@ export default function LoginModal() {
               <div className='arrow-buttons' onClick={() => changeAvatar(-1)}>
                 <img src={chevronLeft} height={80} width={80} />
               </div>
-              <div className='avatar-image-div'>
-                <img
-                  className={`avatar-image  ${avatarChanged && "transition"}`}
-                  src={avatars[selectedAvatar]}
-                />
-              </div>
+              <Avatar
+                avatarChanged={avatarChanged}
+                selectedAvatar={selectedAvatar}
+                login
+              />
               <div className='arrow-buttons' onClick={() => changeAvatar(1)}>
                 <img src={chevronRight} height={80} width={80} />
               </div>
@@ -74,7 +69,7 @@ export default function LoginModal() {
               <input
                 id='name'
                 minLength={2}
-                maxLength={15}
+                maxLength={10}
                 type='text'
                 required
                 value={name}

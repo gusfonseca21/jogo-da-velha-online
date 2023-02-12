@@ -26,10 +26,12 @@
   transform: translate(-50%, -200%);
   transition: transform 3s ease-in-out;
   z-index: 20;
+  pointer-events: none;
 }
 
 .login-form.show {
   transform: translate(-50%, -50%);
+  pointer-events: all;
 }
 
 .heading {
@@ -85,27 +87,6 @@
   transition: all 0.3s ease;
 }
 
-.avatar-image-div {
-  border-radius: 50%;
-  overflow: hidden;
-  height: 14rem;
-  width: 14rem;
-  border: 1px solid #8fbcbb;
-  background-color: black;
-}
-
-.avatar-image {
-  height: 15rem;
-  width: 15rem;
-  object-fit: cover;
-  opacity: 1;
-  transition: all 400ms ease-in-out;
-}
-
-.avatar-image.transition {
-  opacity: 0;
-}
-
 .form-divs {
   display: flex;
   flex-direction: column;
@@ -121,7 +102,7 @@
 }
 
 .form input {
-  height: 2rem;
+  height: 2.5rem;
   width: 20rem;
   font-size: 1.5rem;
   text-align: center;

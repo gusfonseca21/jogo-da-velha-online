@@ -1,10 +1,9 @@
 .chat {
-  height: 90%;
-  width: 30%;
-  position: absolute;
-  right: 1rem;
+  height: 70%;
+  width: 25%;
+  margin-right: 2rem;
   border-radius: 20px;
-  background-color: #1e272e9c;
+  background-color: #1e272e;
   -webkit-box-shadow: 9px 8px 14px 4px rgba(62, 66, 66, 0.26);
   -moz-box-shadow: 9px 8px 14px 4px rgba(62, 66, 66, 0.26);
   box-shadow: 9px 8px 14px 4px rgba(62, 66, 66, 0.26);

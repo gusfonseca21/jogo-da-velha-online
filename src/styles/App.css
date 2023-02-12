@@ -3,6 +3,7 @@
   width: 100vw;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
   align-items: center;
-  position: "relative";
 }

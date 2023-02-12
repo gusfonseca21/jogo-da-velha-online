@@ -1,6 +1,9 @@
-export { default as mao } from "./mao.jpg";
-export { default as stalin } from "./stalin.png";
-export { default as ho } from "./ho.jpg";
-export { default as kim } from "./kim.jpg";
-export { default as khaled } from "./khaled.jpg";
-export { default as rosa } from "./rosa.jpg";
+export { default as africanWoman } from "./african-woman.svg";
+export { default as dave } from "./dave-grhol.svg";
+export { default as indianWoman } from "./indian-woman.svg";
+export { default as lenin } from "./lenin.svg";
+export { default as malcolm } from "./malcolm-x.svg";
+export { default as robo2 } from "./robo2.svg";
+export { default as robo3 } from "./robo3.svg";
+export { default as stalin } from "./stalin.svg";
+export { default as trinity } from "./trinity.svg";
