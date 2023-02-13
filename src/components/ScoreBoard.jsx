@@ -9,12 +9,11 @@ export default function ScoreBoard({ players }) {
         const playerNumber = index + 1;
         return (
           <div key={player.id} className='players-score'>
-            <h5>{`Jogador ${playerNumber}`}</h5>
             <div className='name-avatar'>
+              <Avatar selectedAvatar={player.selectedAvatar} scoreboard />
               <span>{`${player.name} (${
                 playerNumber === 1 ? "X" : "O"
               })`}</span>
-              <Avatar selectedAvatar={player.selectedAvatar} scoreboard />
             </div>
             <span>0</span>
           </div>

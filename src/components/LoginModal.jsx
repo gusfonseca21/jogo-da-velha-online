@@ -38,7 +38,6 @@ export default function LoginModal({ loginModal, setLoginModal }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     socket.emit("join", { name, selectedAvatar });
     setLoginModal(false);
   };
@@ -69,7 +68,7 @@ export default function LoginModal({ loginModal, setLoginModal }) {
               <input
                 id='name'
                 minLength={2}
-                maxLength={10}
+                maxLength={15}
                 type='text'
                 required
                 value={name}

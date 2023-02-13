@@ -16,6 +16,7 @@ export const PlayersContext = createContext();
 
 export const PlayersProvider = ({ children }) => {
   const [playersData, setPlayersData] = useState([]);
+  const [currentPlayer, setCurrentPlayer] = useState(undefined);
 
   const avatars = [
     africanWoman,
@@ -31,10 +32,13 @@ export const PlayersProvider = ({ children }) => {
 
   socket.on("update_players_list", (data) => setPlayersData(data));
 
+  socket.on("set_player", (data) => setCurrentPlayer(data));
+
   const provider = {
     playersData,
     setPlayersData,
     avatars,
+    currentPlayer,
   };
 
   return (

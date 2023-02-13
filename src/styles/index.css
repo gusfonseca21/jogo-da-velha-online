@@ -50,7 +50,8 @@ body {
   font-style: normal;
 }
 
-label {
+label,
+span {
   font-family: "Open-Sans";
   color: #fff;
 }

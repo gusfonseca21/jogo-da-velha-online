@@ -19,11 +19,6 @@
   gap: 1rem;
 }
 
-.players-score h5 {
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-}
-
 .name-avatar {
   display: flex;
   flex-direction: row;

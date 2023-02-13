@@ -8,7 +8,7 @@
   z-index: 10;
   opacity: 0;
   transition: opacity 2s;
-  display: block;
+  display: none;
 }
 
 .modal.show {
