@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import {
   africanWoman,
   dave,
@@ -10,13 +10,15 @@ import {
   stalin,
   trinity,
 } from "../assets/images/avatars";
-import { socket } from "../socket";
+import { SocketContext } from "./SocketContext";
 
 export const PlayersContext = createContext();
 
 export const PlayersProvider = ({ children }) => {
   const [playersData, setPlayersData] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState(undefined);
+
+  const socket = useContext(SocketContext);
 
   const avatars = [
     africanWoman,

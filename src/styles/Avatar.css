@@ -1,8 +1,7 @@
 .avatar-image-div {
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #8fbcbb;
-  /* background-color: black; */
+  border: 1px solid #c0c0c0;
   background-color: white;
 }
 
@@ -19,6 +18,18 @@
 .avatar-image-div.list {
   height: 3.5rem;
   width: 3.5rem;
+}
+
+.avatar-image-div.chat {
+  height: 2.5rem;
+  width: 2.5rem;
+  margin-right: -0.5rem;
+  /* background-color: white; */
+  border: none;
+  border-radius: none;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
 }
 
 .avatar-image {

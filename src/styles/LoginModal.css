@@ -1,4 +1,4 @@
-.modal {
+/* .modal {
   height: 100vh;
   width: 100vw;
   position: absolute;
@@ -9,11 +9,11 @@
   opacity: 0;
   transition: opacity 2s;
   display: none;
-}
+} */
 
-.modal.show {
+/* .modal.show {
   opacity: 1;
-}
+} */
 
 .login-form {
   display: flex;
@@ -52,7 +52,7 @@
   background-color: #1e272e;
   height: 600px;
   width: 400px;
-  border: 1px solid #8fbcbb;
+  border: 5px solid #c0c0c0;
   padding: 10px;
 }
 
@@ -115,7 +115,7 @@
 .form input:focus {
   outline: none;
   box-shadow: none;
-  border: 2px solid #8fbcbb;
+  border: 2px solid #c0c0c0;
 }
 
 .form input::placeholder {
@@ -125,7 +125,7 @@
 button {
   font-size: 2rem;
   font-weight: bolder;
-  background-color: #8fbcbb;
+  background-color: #c0c0c0;
   border: 1px solid #4b5258;
   border-radius: 4px;
   color: #4b5258;

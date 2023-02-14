@@ -1,11 +1,11 @@
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../styles/Chat.css";
-import { socket } from "../socket";
 import { PlayersContext } from "../context/PlayersConxtext";
 import TextareaAutosize from "react-textarea-autosize";
 import Message from "./Message";
+import { SocketContext } from "../context/SocketContext";
 
 export default function Chat() {
   const [newMessage, setNewMessage] = useState("");
@@ -15,20 +15,24 @@ export default function Chat() {
 
   const currentPlayer = playersCtx.currentPlayer;
 
-  const submitNewMessage = (event) => {
-    event.preventDefault();
+  const socket = useContext(SocketContext);
+
+  const submitNewMessage = () => {
     setMessages((prevState) => [
-      ...prevState,
       { message: newMessage, sender: currentPlayer },
+      ...prevState,
     ]);
     socket.emit("message_sent", { sender: currentPlayer, message: newMessage });
     setNewMessage("");
   };
 
-  useState(() => {
+  useEffect(() => {
     socket.on("message_received", (serverMessages) => {
-      setMessages((prevState) => [...prevState, serverMessages]);
+      setMessages((prevState) => [serverMessages, ...prevState]);
     });
+    return function cleanup() {
+      socket.removeListener("message_received");
+    };
   }, [socket]);
 
   return (
@@ -45,6 +49,12 @@ export default function Chat() {
       <form onSubmit={submitNewMessage}>
         <div className='chat-input'>
           <TextareaAutosize
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                submitNewMessage();
+              }
+            }}
             minRows={1}
             maxRows={3}
             className='input'
@@ -53,7 +63,11 @@ export default function Chat() {
             value={newMessage}
             onChange={(event) => setNewMessage(event.target.value)}
           />
-          <FontAwesomeIcon icon={faPaperPlane} className='send-icon' />
+          <FontAwesomeIcon
+            icon={faPaperPlane}
+            className='send-icon'
+            onClick={submitNewMessage}
+          />
         </div>
       </form>
     </div>

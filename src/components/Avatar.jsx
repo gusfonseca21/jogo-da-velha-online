@@ -8,6 +8,7 @@ export default function Avatar({
   login,
   scoreboard,
   list,
+  chat,
 }) {
   const playersCtx = useContext(PlayersContext);
   const { avatars } = playersCtx;
@@ -16,7 +17,7 @@ export default function Avatar({
     <div
       className={`avatar-image-div ${login && "login"} ${
         scoreboard && "scoreboard"
-      }  ${list && "list"} `}
+      }  ${list && "list"} ${chat && "chat"} `}
     >
       <img
         className={`avatar-image ${avatarChanged && "transition"}`}

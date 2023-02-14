@@ -1,17 +1,19 @@
 import { useContext, useState } from "react";
-import chevronRight from "../assets/icons/chevron-right.png";
-import chevronLeft from "../assets/icons/chevron-left.png";
+import { Icon } from "@iconify/react";
+import chevronRight from "@iconify/icons-material-symbols/chevron-right";
+import chevronLeft from "@iconify/icons-material-symbols/chevron-left";
 
 import "../styles/LoginModal.css";
 
-import { socket } from "../socket";
 import { Avatar } from ".";
 import { PlayersContext } from "../context/PlayersConxtext";
+import { SocketContext } from "../context/SocketContext";
 
 export default function LoginModal({ loginModal, setLoginModal }) {
   const playersCtx = useContext(PlayersContext);
-
   const avatars = playersCtx.avatars;
+
+  const socket = useContext(SocketContext);
 
   const [selectedAvatar, setSelectedAvatar] = useState(
     Math.floor(Math.random() * avatars.length)
@@ -50,7 +52,7 @@ export default function LoginModal({ loginModal, setLoginModal }) {
           <div className='avatar'>
             <div className='avatar-choice'>
               <div className='arrow-buttons' onClick={() => changeAvatar(-1)}>
-                <img src={chevronLeft} height={80} width={80} />
+                <Icon icon={chevronLeft} color='silver' height={80} />
               </div>
               <Avatar
                 avatarChanged={avatarChanged}
@@ -58,7 +60,7 @@ export default function LoginModal({ loginModal, setLoginModal }) {
                 login
               />
               <div className='arrow-buttons' onClick={() => changeAvatar(1)}>
-                <img src={chevronRight} height={80} width={80} />
+                <Icon icon={chevronRight} color='silver' height={80} />
               </div>
             </div>
           </div>

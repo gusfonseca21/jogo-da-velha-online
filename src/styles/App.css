@@ -7,3 +7,11 @@
   gap: 2rem;
   align-items: center;
 }
+
+.App.game-body {
+  display: none;
+}
+
+.game-body.show {
+  /* opacity: 1; */
+}
