@@ -13,16 +13,16 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 10px;
+  position: relative;
 }
 
 .meassage-header {
   display: flex;
   flex-direction: row;
-  padding: 0.5rem 0.5rem 0 0.5rem;
+  padding: 0.5rem 0.5rem 0 0rem;
 }
 
 .meassage-header p {
-  font-size: 1.3rem;
   font-weight: 800;
 }
 
@@ -31,7 +31,21 @@
   color: #333;
   text-align: left;
   margin: 0;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
+  padding-bottom: 0;
+}
+
+.your-message p,
+.other-players-message-body p {
+  padding-bottom: 1rem;
+}
+
+.date {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  font-size: 0.8rem;
+  color: #333;
 }
 
 .arrow {

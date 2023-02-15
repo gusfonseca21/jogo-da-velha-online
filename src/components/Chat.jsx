@@ -18,11 +18,16 @@ export default function Chat() {
   const socket = useContext(SocketContext);
 
   const submitNewMessage = () => {
+    if (newMessage.trim() === "") return;
     setMessages((prevState) => [
-      { message: newMessage, sender: currentPlayer },
+      { message: newMessage, sender: currentPlayer, date: new Date() },
       ...prevState,
     ]);
-    socket.emit("message_sent", { sender: currentPlayer, message: newMessage });
+    socket.emit("message_sent", {
+      sender: currentPlayer,
+      message: newMessage,
+      date: new Date(),
+    });
     setNewMessage("");
   };
 

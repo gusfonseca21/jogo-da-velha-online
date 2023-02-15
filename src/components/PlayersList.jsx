@@ -1,4 +1,5 @@
 import Avatar from "./Avatar";
+import "../styles/PlayersList.css";
 
 export default function PlayersList({ players }) {
   return (

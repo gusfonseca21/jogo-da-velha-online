@@ -9,6 +9,20 @@
   transition: all 2s ease-in-out;
 }
 
+.center {
+  position: relative;
+}
+
+.playing {
+  position: absolute;
+  left: 50%;
+  top: -4rem;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
 .body.show {
   opacity: 1;
 }

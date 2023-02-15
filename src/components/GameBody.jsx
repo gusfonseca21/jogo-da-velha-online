@@ -10,6 +10,9 @@ export default function GameBody() {
 
   const playersCtx = useContext(PlayersContext);
   const players = playersCtx.playersData;
+  const currentPlayer = playersCtx.currentPlayer;
+
+  const playerActive = playersCtx.playerActive;
 
   const socket = useContext(SocketContext);
 
@@ -21,6 +24,13 @@ export default function GameBody() {
     <div className={[`body ${showGameBoard ? "show" : ""}`]}>
       <PlayersList players={players} />
       <div className='center'>
+        <span className='playing'>{`${
+          players.length < 2
+            ? "Aguardando jogadores"
+            : currentPlayer.id === playerActive.id
+            ? "Sua vez"
+            : "Vez de " + playerActive.name
+        } `}</span>
         <ScoreBoard players={players} />
         <GameBoard />
       </div>

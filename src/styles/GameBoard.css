@@ -7,6 +7,18 @@
   position: "relative";
 }
 
+.input-image {
+  position: absolute;
+  height: 8rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.input-image.hovering {
+  opacity: 0.2;
+}
+
 .board {
   height: 500px;
   width: 500px;
@@ -16,6 +28,7 @@
   -moz-box-shadow: 9px 8px 14px 4px rgba(62, 66, 66, 0.26);
   box-shadow: 9px 8px 14px 4px rgba(62, 66, 66, 0.26);
   padding: 10px;
+  overflow: hidden;
 }
 
 .grid-container {
@@ -25,6 +38,19 @@
     "4 5 6"
     "1 2 3";
   height: 100%;
+  width: 100%;
+}
+
+.grid-container div {
+  position: relative;
+}
+
+.grid-container:hover {
+  cursor: pointer;
+}
+
+.grid-container.denied:hover {
+  cursor: not-allowed;
 }
 
 .area-5 {
