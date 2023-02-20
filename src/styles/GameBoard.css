@@ -16,7 +16,7 @@
 }
 
 .input-image.hovering {
-  opacity: 0.2;
+  opacity: 0.3;
 }
 
 .board {
@@ -45,26 +45,27 @@
   position: relative;
 }
 
+.grid-container.denied {
+  cursor: none;
+  pointer-events: none;
+}
+
 .grid-container:hover {
   cursor: pointer;
 }
 
-.grid-container.denied:hover {
-  cursor: not-allowed;
-}
-
-.area-5 {
+.area5 {
   border: 1px solid rgba(210, 218, 226, 0.458);
 }
 
-.area-4,
-.area-6 {
+.area4,
+.area6 {
   border-top: 1px solid rgba(210, 218, 226, 0.458);
   border-bottom: 1px solid rgba(210, 218, 226, 0.458);
 }
 
-.area-8,
-.area-2 {
+.area8,
+.area2 {
   border-right: 1px solid rgba(210, 218, 226, 0.458);
   border-left: 1px solid rgba(210, 218, 226, 0.458);
 }

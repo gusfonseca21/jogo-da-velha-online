@@ -19,7 +19,7 @@
 .meassage-header {
   display: flex;
   flex-direction: row;
-  padding: 0.5rem 0.5rem 0 0rem;
+  padding: 0.5rem 0.5rem 0 0;
 }
 
 .meassage-header p {
@@ -37,14 +37,14 @@
 
 .your-message p,
 .other-players-message-body p {
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
 }
 
 .date {
   position: absolute;
   bottom: 5px;
   right: 10px;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #333;
 }
 

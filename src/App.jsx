@@ -1,20 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LoginModal, GameBody } from "./components";
 import "./styles/App.css";
 
 function App() {
-  const [loginModal, setLoginModal] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoginModal(true);
-    }, 200);
-  }, []);
+  const [loginModal, setLoginModal] = useState(true);
 
   return (
     <div className='App'>
       <LoginModal loginModal={loginModal} setLoginModal={setLoginModal} />
-      <GameBody />
+      {!loginModal && <GameBody />}
     </div>
   );
 }

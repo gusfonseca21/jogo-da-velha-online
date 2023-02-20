@@ -46,7 +46,7 @@ export default function LoginModal({ loginModal, setLoginModal }) {
 
   return (
     <>
-      <div className={`login-form ${loginModal && "show"}`}>
+      <div className={`login-form ${!loginModal && "hide"}`}>
         <h2 className='heading'>Faça seu login e comece a jogar!</h2>
         <div className='card'>
           <div className='avatar'>

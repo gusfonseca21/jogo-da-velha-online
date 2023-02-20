@@ -17,9 +17,9 @@ export const PlayersContext = createContext();
 
 export const PlayersProvider = ({ children }) => {
   const [playersData, setPlayersData] = useState([]);
-  const [playersPlaying, setPlayersPlaying] = useState([]);
-  const [playerActive, setPlayerActive] = useState(undefined);
-  const [currentPlayer, setCurrentPlayer] = useState(undefined);
+  const [playersPlaying, setPlayersPlaying] = useState(null);
+  const [playerActive, setPlayerActive] = useState(null);
+  const [currentPlayer, setCurrentPlayer] = useState(null);
 
   const socket = useContext(SocketContext);
 
@@ -35,20 +35,27 @@ export const PlayersProvider = ({ children }) => {
     trinity,
   ];
 
-  socket.on("update_players_list", (data) => {
-    console.log(data);
-    if (data.length === 1) setPlayerActive(...data);
-
-    setPlayersData(data);
-  });
-
-  socket.on("set_player", (data) => setCurrentPlayer(data));
-
   useEffect(() => {
-    if (playersData.length > 1) {
-      setPlayersPlaying([playersData[0], playersData[1]]);
-    }
-  }, [playersData]);
+    socket.on("update_players_list", (serverPlayers) => {
+      setPlayersData(serverPlayers);
+    });
+    socket.on("set_active_player", (player) => {
+      setPlayerActive(player);
+    });
+
+    socket.on("set_players_playing", (serverPlayersPlaying) => {
+      setPlayersPlaying(serverPlayersPlaying);
+    });
+    socket.on("set_player", (player) => {
+      setCurrentPlayer(player);
+    });
+    return function cleanup() {
+      socket.removeListener("update_players_list");
+      socket.removeListener("set_player");
+      socket.removeListener("set_players_playing");
+      socket.removeListener("set_active_player");
+    };
+  }, [socket]);
 
   const provider = {
     playersData,

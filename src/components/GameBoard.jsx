@@ -1,257 +1,144 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import X from "../assets/images/X.svg";
 import O from "../assets/images/O.svg";
 import "../styles/GameBoard.css";
 import { useContext } from "react";
 import { PlayersContext } from "../context/PlayersConxtext";
+import { SocketContext } from "../context/SocketContext";
 
 export default function GameBoard() {
-  const [areaInput, setAreaInput] = useState({
-    area1: undefined,
-    area2: undefined,
-    area3: undefined,
-    area4: undefined,
-    area5: undefined,
-    area6: undefined,
-    area7: undefined,
-    area8: undefined,
-    area9: undefined,
-  });
+  const [tiles, setTiles] = useState([
+    { className: "area1", player: null, hovering: null },
+    { className: "area2", player: null, hovering: null },
+    { className: "area3", player: null, hovering: null },
+    { className: "area4", player: null, hovering: null },
+    { className: "area5", player: null, hovering: null },
+    { className: "area6", player: null, hovering: null },
+    { className: "area7", player: null, hovering: null },
+    { className: "area8", player: null, hovering: null },
+    { className: "area9", player: null, hovering: null },
+  ]);
 
-  const [areaInputHover, setAreaInputHover] = useState({
-    area1: undefined,
-    area2: undefined,
-    area3: undefined,
-    area4: undefined,
-    area5: undefined,
-    area6: undefined,
-    area7: undefined,
-    area8: undefined,
-    area9: undefined,
-  });
+  const { playersPlaying, playerActive, currentPlayer } =
+    useContext(PlayersContext);
 
-  const playersCtx = useContext(PlayersContext);
+  console.log(playerActive);
 
-  const playersPlaying = playersCtx.playersPlaying;
-  const playerActive = playersCtx.playerActive;
-  const currentPlayerIsPlaying =
-    playersCtx.currentPlayer?.id === playerActive?.id;
+  const socket = useContext(SocketContext);
 
-  const clickOnGridHandler = (gridClassName) => {
-    if (!playerActive) return;
-    if (!currentPlayerIsPlaying) return;
+  const currentPlayerIsPlaying = playerActive?.id === currentPlayer?.id;
 
-    let element = gridClassName.target;
+  const onClickTileHandler = (event) => {
+    let clickedTile = event.target.className;
 
-    if (element.className.split(" ")[0] === "input-image") {
-      while (element && !element.className?.includes("area")) {
-        element = element.parentNode;
-      }
-      updateAreaInput(element.className);
-    } else {
-      updateAreaInput(element.className);
+    if (clickedTile === "input-image hovering") {
+      clickedTile = event.target.parentElement.className;
+    }
+
+    setTiles((prevState) => {
+      return prevState.map((tile) => {
+        if (tile.className === clickedTile) {
+          return {
+            ...tile,
+            player: currentPlayer.id,
+          };
+        } else {
+          return tile;
+        }
+      });
+    });
+
+    socket.emit("player_input", {
+      player: currentPlayer.id,
+      area: clickedTile,
+    });
+  };
+
+  const onMouseEnterHandler = (event) => {
+    if (playersPlaying && playerActive.id === currentPlayer.id) {
+      const hoveredTile = event.target.className;
+
+      const playerInput = currentPlayer.id === playersPlaying[0].id ? X : O;
+
+      setTiles((prevState) => {
+        return prevState.map((tile) => {
+          if (tile.className === hoveredTile) {
+            return {
+              ...tile,
+              hovering: playerInput,
+            };
+          } else {
+            return tile;
+          }
+        });
+      });
     }
   };
 
-  const updateAreaInput = (gridClassName, hover) => {
-    console.log(gridClassName);
-
-    const grid = gridClassName.replace(/-/g, "");
-    if (hover) {
-      if (playerActive.id === playersPlaying[0].id)
-        setAreaInputHover((prevState) => ({
-          ...prevState,
-          [grid]: X,
-        }));
-      if (playerActive.id === playersPlaying[1].id)
-        setAreaInputHover((prevState) => ({
-          ...prevState,
-          [grid]: O,
-        }));
-    } else {
-      if (playerActive.id === playersPlaying[0].id)
-        setAreaInput((prevState) => ({
-          ...prevState,
-          [grid]: X,
-        }));
-      if (playerActive.id === playersPlaying[1].id)
-        setAreaInput((prevState) => ({
-          ...prevState,
-          [grid]: O,
-        }));
+  const onMouseLeaveHandler = () => {
+    if (playerActive?.id === currentPlayer?.id) {
+      setTiles((prevState) => {
+        return prevState.map((tile) => {
+          return {
+            ...tile,
+            hovering: null,
+          };
+        });
+      });
     }
   };
 
-  const removeHoverImage = (gridClassName) => {
-    const grid = gridClassName.replace(/-/g, "");
-
-    setAreaInputHover((prevState) => ({
-      ...prevState,
-      [grid]: undefined,
-    }));
-  };
+  useEffect(() => {
+    socket.on("update_tiles", (serverTiles) => {
+      const transformedServerTiles = serverTiles.map((serverTile) => {
+        return {
+          className: serverTile.area,
+          player: serverTile.player,
+        };
+      });
+      setTiles((prevState) => {
+        return transformedServerTiles.map((serverTile) => {
+          const prevStateTiles = prevState.find(
+            (tile) => tile.className === serverTile.className
+          );
+          return { ...serverTile, prevStateTiles };
+        });
+      });
+    });
+    return function cleanup() {
+      socket.removeListener("update_tiles");
+    };
+  }, [socket]);
 
   return (
     <div className='game-board'>
       <div className='board'>
         <div
           className={`grid-container ${
-            !currentPlayerIsPlaying ? "denied" : ""
+            !currentPlayerIsPlaying || !playersPlaying ? "denied" : ""
           }`}
         >
-          <div
-            className='area-7'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area7) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area7 && areaInputHover.area7 ? "hovering" : ""
-              }`}
-              src={areaInput.area7 || areaInputHover.area7}
-            />
-          </div>
-          <div
-            className='area-8'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area8) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area8 && areaInputHover.area8 ? "hovering" : ""
-              }`}
-              src={areaInput.area8 || areaInputHover.area8}
-            />
-          </div>
-          <div
-            className='area-9'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area9) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area9 && areaInputHover.area9 ? "hovering" : ""
-              }`}
-              src={areaInput.area9 || areaInputHover.area9}
-            />
-          </div>
-          <div
-            className='area-4'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area4) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area4 && areaInputHover.area4 ? "hovering" : ""
-              }`}
-              src={areaInput.area4 || areaInputHover.area4}
-            />
-          </div>
-          <div
-            className='area-5'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area5) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area5 && areaInputHover.area5 ? "hovering" : ""
-              }`}
-              src={areaInput.area5 || areaInputHover.area5}
-            />
-          </div>
-          <div
-            className='area-6'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area6) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area6 && areaInputHover.area6 ? "hovering" : ""
-              }`}
-              src={areaInput.area6 || areaInputHover.area6}
-            />
-          </div>
-          <div
-            className='area-1'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area1) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area1 && areaInputHover.area1 ? "hovering" : ""
-              }`}
-              src={areaInput.area1 || areaInputHover.area1}
-            />
-          </div>
-          <div
-            className='area-2'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area2) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area2 && areaInputHover.area2 ? "hovering" : ""
-              }`}
-              src={areaInput.area2 || areaInputHover.area2}
-            />
-          </div>
-          <div
-            className='area-3'
-            onClick={(event) => clickOnGridHandler(event)}
-            onMouseEnter={(event) => {
-              if (!playerActive && !areaInput.area3) return;
-              if (currentPlayerIsPlaying)
-                updateAreaInput(event.target.className, true);
-            }}
-            onMouseLeave={(event) => removeHoverImage(event.target.className)}
-          >
-            <img
-              className={`input-image ${
-                !areaInput.area3 && areaInputHover.area3 ? "hovering" : ""
-              }`}
-              src={areaInput.area3 || areaInputHover.area3}
-            />
-          </div>
+          {tiles.map((tile) => {
+            return (
+              <div
+                key={tile.className}
+                className={tile.className}
+                onClick={(event) => onClickTileHandler(event)}
+                onMouseEnter={(event) => onMouseEnterHandler(event)}
+                onMouseLeave={onMouseLeaveHandler}
+              >
+                {tile.player && (
+                  <img
+                    className={`input-image`}
+                    src={tile.player === playersPlaying[0].id ? X : O}
+                  />
+                )}
+                {!tile.player && (
+                  <img className='input-image hovering' src={tile.hovering} />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

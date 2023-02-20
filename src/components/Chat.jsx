@@ -17,16 +17,16 @@ export default function Chat() {
 
   const socket = useContext(SocketContext);
 
-  const submitNewMessage = () => {
-    if (newMessage.trim() === "") return;
+  const submitNewMessage = (message, senderObj, date = new Date()) => {
+    if (message.trim() === "") return;
     setMessages((prevState) => [
-      { message: newMessage, sender: currentPlayer, date: new Date() },
+      { message, sender: senderObj, date },
       ...prevState,
     ]);
     socket.emit("message_sent", {
-      sender: currentPlayer,
-      message: newMessage,
-      date: new Date(),
+      sender: senderObj,
+      message,
+      date,
     });
     setNewMessage("");
   };
@@ -51,13 +51,13 @@ export default function Chat() {
           />
         ))}
       </div>
-      <form onSubmit={submitNewMessage}>
+      <form onSubmit={() => submitNewMessage(newMessage, currentPlayer)}>
         <div className='chat-input'>
           <TextareaAutosize
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
-                submitNewMessage();
+                submitNewMessage(newMessage, currentPlayer);
               }
             }}
             minRows={1}
@@ -71,7 +71,7 @@ export default function Chat() {
           <FontAwesomeIcon
             icon={faPaperPlane}
             className='send-icon'
-            onClick={submitNewMessage}
+            onClick={() => submitNewMessage(newMessage, currentPlayer)}
           />
         </div>
       </form>

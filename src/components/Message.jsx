@@ -19,6 +19,7 @@ export default function Message({ message, currentPlayer }) {
       </div>
     );
   }
+
   return (
     <div className='your-message'>
       <p>{message.message}</p>
