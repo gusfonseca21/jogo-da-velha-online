@@ -7,18 +7,6 @@
   position: "relative";
 }
 
-.input-image {
-  position: absolute;
-  height: 8rem;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.input-image.hovering {
-  opacity: 0.3;
-}
-
 .board {
   height: 500px;
   width: 500px;
@@ -40,7 +28,6 @@
   height: 100%;
   width: 100%;
 }
-
 .grid-container div {
   position: relative;
 }
@@ -68,4 +55,21 @@
 .area2 {
   border-right: 1px solid rgba(210, 218, 226, 0.458);
   border-left: 1px solid rgba(210, 218, 226, 0.458);
+}
+
+.input-image {
+  position: absolute;
+  height: 8rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.input-image.hover {
+  opacity: 0.35;
+}
+
+.input-image.clicked {
+  opacity: 1;
 }

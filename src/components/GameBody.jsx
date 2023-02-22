@@ -9,7 +9,7 @@ export default function GameBody() {
   const players = playersCtx.playersData;
   const currentPlayer = playersCtx?.currentPlayer;
 
-  const playerActive = playersCtx?.playerActive;
+  const playerActive = playersCtx?.activePlayer;
 
   return (
     <div className={[`body ${currentPlayer ? "show" : ""}`]}>

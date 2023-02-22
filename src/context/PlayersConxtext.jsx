@@ -18,8 +18,11 @@ export const PlayersContext = createContext();
 export const PlayersProvider = ({ children }) => {
   const [playersData, setPlayersData] = useState([]);
   const [playersPlaying, setPlayersPlaying] = useState(null);
-  const [playerActive, setPlayerActive] = useState(null);
+  const [activePlayer, setActivePlayer] = useState(null);
   const [currentPlayer, setCurrentPlayer] = useState(null);
+
+  console.log(playersPlaying);
+  console.log(playersData);
 
   const socket = useContext(SocketContext);
 
@@ -40,11 +43,12 @@ export const PlayersProvider = ({ children }) => {
       setPlayersData(serverPlayers);
     });
     socket.on("set_active_player", (player) => {
-      setPlayerActive(player);
+      setActivePlayer(player);
     });
 
     socket.on("set_players_playing", (serverPlayersPlaying) => {
-      setPlayersPlaying(serverPlayersPlaying);
+      if (serverPlayersPlaying.length === 0) setPlayersPlaying(null);
+      else setPlayersPlaying(serverPlayersPlaying);
     });
     socket.on("set_player", (player) => {
       setCurrentPlayer(player);
@@ -63,7 +67,7 @@ export const PlayersProvider = ({ children }) => {
     avatars,
     currentPlayer,
     playersPlaying,
-    playerActive,
+    activePlayer,
   };
 
   return (

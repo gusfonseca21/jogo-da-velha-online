@@ -6,104 +6,58 @@ import { useContext } from "react";
 import { PlayersContext } from "../context/PlayersConxtext";
 import { SocketContext } from "../context/SocketContext";
 
+// CONTINUAR COM AS CONDIÇÕES DE SAÍDA DE JOGADORES DA PARTIDA
+
 export default function GameBoard() {
-  const [tiles, setTiles] = useState([
-    { className: "area1", player: null, hovering: null },
-    { className: "area2", player: null, hovering: null },
-    { className: "area3", player: null, hovering: null },
-    { className: "area4", player: null, hovering: null },
-    { className: "area5", player: null, hovering: null },
-    { className: "area6", player: null, hovering: null },
-    { className: "area7", player: null, hovering: null },
-    { className: "area8", player: null, hovering: null },
-    { className: "area9", player: null, hovering: null },
-  ]);
+  const [tiles, setTiles] = useState({
+    area1: null,
+    area2: null,
+    area3: null,
+    area4: null,
+    area5: null,
+    area6: null,
+    area7: null,
+    area8: null,
+    area9: null,
+  });
 
-  const { playersPlaying, playerActive, currentPlayer } =
+  const { playersPlaying, activePlayer, currentPlayer } =
     useContext(PlayersContext);
-
-  console.log(playerActive);
 
   const socket = useContext(SocketContext);
 
-  const currentPlayerIsPlaying = playerActive?.id === currentPlayer?.id;
+  const currentPlayerIsPlaying = activePlayer?.id === currentPlayer?.id;
 
-  const onClickTileHandler = (event) => {
-    let clickedTile = event.target.className;
+  const onClickTileHandler = (tileKey) => {
+    const updatedTiles = { ...tiles };
+    const updatedTile = { [tileKey]: currentPlayer.id };
 
-    if (clickedTile === "input-image hovering") {
-      clickedTile = event.target.parentElement.className;
-    }
+    if (updatedTiles[tileKey]) return;
 
-    setTiles((prevState) => {
-      return prevState.map((tile) => {
-        if (tile.className === clickedTile) {
-          return {
-            ...tile,
-            player: currentPlayer.id,
-          };
-        } else {
-          return tile;
-        }
-      });
-    });
+    updatedTiles[tileKey] = currentPlayer.id;
+    setTiles(updatedTiles);
 
-    socket.emit("player_input", {
-      player: currentPlayer.id,
-      area: clickedTile,
-    });
+    socket.emit("player_input", updatedTile);
   };
 
-  const onMouseEnterHandler = (event) => {
-    if (playersPlaying && playerActive.id === currentPlayer.id) {
-      const hoveredTile = event.target.className;
+  const onMouseEnterLeaveHandler = (event, handler) => {
+    let className;
+    if (handler === "enter")
+      className = `${event.target.children[0].className} hover`;
+    if (handler === "leave") className = "input-image";
 
-      const playerInput = currentPlayer.id === playersPlaying[0].id ? X : O;
-
-      setTiles((prevState) => {
-        return prevState.map((tile) => {
-          if (tile.className === hoveredTile) {
-            return {
-              ...tile,
-              hovering: playerInput,
-            };
-          } else {
-            return tile;
-          }
-        });
-      });
-    }
-  };
-
-  const onMouseLeaveHandler = () => {
-    if (playerActive?.id === currentPlayer?.id) {
-      setTiles((prevState) => {
-        return prevState.map((tile) => {
-          return {
-            ...tile,
-            hovering: null,
-          };
-        });
-      });
+    if (event.target.children.length) {
+      if (event.target.children[0]?.className === "input-image clicked") return;
+      event.target.children[0].className = className;
+    } else {
+      if (event.target.className === "input-image clicked") return;
+      event.target.className = className;
     }
   };
 
   useEffect(() => {
     socket.on("update_tiles", (serverTiles) => {
-      const transformedServerTiles = serverTiles.map((serverTile) => {
-        return {
-          className: serverTile.area,
-          player: serverTile.player,
-        };
-      });
-      setTiles((prevState) => {
-        return transformedServerTiles.map((serverTile) => {
-          const prevStateTiles = prevState.find(
-            (tile) => tile.className === serverTile.className
-          );
-          return { ...serverTile, prevStateTiles };
-        });
-      });
+      setTiles(serverTiles);
     });
     return function cleanup() {
       socket.removeListener("update_tiles");
@@ -118,23 +72,32 @@ export default function GameBoard() {
             !currentPlayerIsPlaying || !playersPlaying ? "denied" : ""
           }`}
         >
-          {tiles.map((tile) => {
+          {Object.keys(tiles).map((tileKey) => {
             return (
               <div
-                key={tile.className}
-                className={tile.className}
-                onClick={(event) => onClickTileHandler(event)}
-                onMouseEnter={(event) => onMouseEnterHandler(event)}
-                onMouseLeave={onMouseLeaveHandler}
+                key={tileKey}
+                className={tileKey}
+                onClick={() => onClickTileHandler(tileKey)}
+                onMouseEnter={(event) =>
+                  onMouseEnterLeaveHandler(event, "enter")
+                }
+                onMouseLeave={(event) =>
+                  onMouseEnterLeaveHandler(event, "leave")
+                }
               >
-                {tile.player && (
+                {playersPlaying && (
                   <img
-                    className={`input-image`}
-                    src={tile.player === playersPlaying[0].id ? X : O}
+                    className={`input-image ${tiles[tileKey] ? "clicked" : ""}`}
+                    src={
+                      tiles[tileKey]
+                        ? tiles[tileKey] === playersPlaying[0].id
+                          ? X
+                          : O
+                        : currentPlayer.id === playersPlaying[0].id
+                        ? X
+                        : O
+                    }
                   />
-                )}
-                {!tile.player && (
-                  <img className='input-image hovering' src={tile.hovering} />
                 )}
               </div>
             );
