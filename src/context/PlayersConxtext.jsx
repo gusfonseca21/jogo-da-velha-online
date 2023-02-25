@@ -21,9 +21,6 @@ export const PlayersProvider = ({ children }) => {
   const [activePlayer, setActivePlayer] = useState(null);
   const [currentPlayer, setCurrentPlayer] = useState(null);
 
-  console.log(playersPlaying);
-  console.log(playersData);
-
   const socket = useContext(SocketContext);
 
   const avatars = [
@@ -39,9 +36,14 @@ export const PlayersProvider = ({ children }) => {
   ];
 
   useEffect(() => {
+    socket.on("set_player", (player) => {
+      setCurrentPlayer(player);
+    });
+
     socket.on("update_players_list", (serverPlayers) => {
       setPlayersData(serverPlayers);
     });
+
     socket.on("set_active_player", (player) => {
       setActivePlayer(player);
     });
@@ -50,12 +52,9 @@ export const PlayersProvider = ({ children }) => {
       if (serverPlayersPlaying.length === 0) setPlayersPlaying(null);
       else setPlayersPlaying(serverPlayersPlaying);
     });
-    socket.on("set_player", (player) => {
-      setCurrentPlayer(player);
-    });
     return function cleanup() {
-      socket.removeListener("update_players_list");
       socket.removeListener("set_player");
+      socket.removeListener("update_players_list");
       socket.removeListener("set_players_playing");
       socket.removeListener("set_active_player");
     };

@@ -66,44 +66,50 @@ export default function GameBoard() {
 
   return (
     <div className='game-board'>
-      <div className='board'>
-        <div
-          className={`grid-container ${
-            !currentPlayerIsPlaying || !playersPlaying ? "denied" : ""
-          }`}
-        >
-          {Object.keys(tiles).map((tileKey) => {
-            return (
-              <div
-                key={tileKey}
-                className={tileKey}
-                onClick={() => onClickTileHandler(tileKey)}
-                onMouseEnter={(event) =>
-                  onMouseEnterLeaveHandler(event, "enter")
-                }
-                onMouseLeave={(event) =>
-                  onMouseEnterLeaveHandler(event, "leave")
-                }
-              >
-                {playersPlaying && (
-                  <img
-                    className={`input-image ${tiles[tileKey] ? "clicked" : ""}`}
-                    src={
-                      tiles[tileKey]
-                        ? tiles[tileKey] === playersPlaying[0].id
-                          ? X
-                          : O
-                        : currentPlayer.id === playersPlaying[0].id
-                        ? X
-                        : O
-                    }
-                  />
-                )}
-              </div>
-            );
-          })}
+      {currentPlayer && (
+        <div className='board'>
+          <div
+            className={`grid-container ${
+              !currentPlayerIsPlaying || !playersPlaying ? "denied" : ""
+            }`}
+          >
+            {Object.keys(tiles).map((tileKey) => {
+              return (
+                <div
+                  key={tileKey}
+                  className={tileKey}
+                  onClick={() => onClickTileHandler(tileKey)}
+                  onMouseEnter={(event) =>
+                    onMouseEnterLeaveHandler(event, "enter")
+                  }
+                  onMouseLeave={(event) =>
+                    onMouseEnterLeaveHandler(event, "leave")
+                  }
+                >
+                  {playersPlaying && (
+                    <img
+                      className={`input-image ${
+                        tiles[tileKey] ? "clicked" : ""
+                      }`}
+                      src={
+                        tiles[tileKey]
+                          ? tiles[tileKey] === playersPlaying[0].id
+                            ? X
+                            : O
+                          : activePlayer.id === currentPlayer.id
+                          ? currentPlayer.id === playersPlaying[0].id
+                            ? X
+                            : O
+                          : null
+                      }
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

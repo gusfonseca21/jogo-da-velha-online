@@ -3,6 +3,19 @@ import Avatar from "./Avatar";
 import { format } from "date-fns";
 
 export default function Message({ message, currentPlayer }) {
+  if (message.sender.id === "1") {
+    return (
+      <div className='other-players-message server'>
+        <div className='other-players-message-body'>
+          <p>{message.message}</p>
+        </div>
+        <span className='date'>
+          {format(new Date(message.date), "HH:mm:ss")}
+        </span>
+      </div>
+    );
+  }
+
   if (message.sender.id !== currentPlayer.id) {
     return (
       <div className='other-players-message'>
