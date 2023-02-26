@@ -1,0 +1,29 @@
+.end-of-round-div {
+  position: absolute;
+  background-color: red;
+  height: 30%;
+  width: 120%;
+  top: 150%;
+  left: 46%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  background-color: #1e272e;
+  border: 2px solid white;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 800ms ease-in-out;
+}
+
+.end-of-round-div.show {
+  top: 50%;
+}
+
+.result {
+  font-size: 3rem;
+  text-align: center;
+}

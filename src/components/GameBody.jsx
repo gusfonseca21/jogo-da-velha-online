@@ -3,26 +3,24 @@ import { PlayersContext } from "../context/PlayersConxtext";
 import { GameBoard, ScoreBoard, Chat } from ".";
 import "../styles/GameBody.css";
 import PlayersList from "./PlayersList";
+import ActivePlayerSpan from "./ActivePlayerSpan";
+import EndOfRound from "./EndOfRound";
 
 export default function GameBody() {
-  const playersCtx = useContext(PlayersContext);
-  const players = playersCtx.playersData;
-  const currentPlayer = playersCtx?.currentPlayer;
-
-  const playerActive = playersCtx?.activePlayer;
+  const { playersData, currentPlayer, activePlayer, playersPlaying } =
+    useContext(PlayersContext);
 
   return (
     <div className={[`body ${currentPlayer ? "show" : ""}`]}>
-      <PlayersList players={players} />
+      <PlayersList players={playersData} />
       <div className='center'>
-        <span className='playing'>{`${
-          players.length < 2
-            ? "Aguardando jogadores"
-            : currentPlayer?.id === playerActive?.id
-            ? "Sua vez"
-            : "Vez de " + playerActive?.name
-        } `}</span>
-        <ScoreBoard players={players} />
+        <EndOfRound />
+        <ActivePlayerSpan
+          players={playersData}
+          playerActive={activePlayer}
+          currentPlayer={currentPlayer}
+        />
+        {playersPlaying && <ScoreBoard playersPlaying={playersPlaying} />}
         <GameBoard />
       </div>
       <Chat />

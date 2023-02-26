@@ -1,21 +1,24 @@
 import "../styles/ScoreBoard.css";
 import { Avatar } from ".";
 
-export default function ScoreBoard({ players }) {
+export default function ScoreBoard({ playersPlaying }) {
   return (
     <div className='score-board'>
-      {players.map((player, index) => {
-        if (index > 1) return;
+      {playersPlaying.map((playerPlaying, index) => {
+        console.log(playerPlaying);
         const playerNumber = index + 1;
         return (
-          <div key={player.id} className='players-score'>
+          <div key={playerPlaying.id} className='players-score'>
             <div className='name-avatar'>
-              <Avatar selectedAvatar={player.selectedAvatar} scoreboard />
-              <span>{`${player.name} (${
+              <Avatar
+                selectedAvatar={playerPlaying.selectedAvatar}
+                scoreboard
+              />
+              <span>{`${playerPlaying.name} (${
                 playerNumber === 1 ? "X" : "O"
               })`}</span>
             </div>
-            <span>0</span>
+            <span>{playerPlaying.roundScore}</span>
           </div>
         );
       })}
