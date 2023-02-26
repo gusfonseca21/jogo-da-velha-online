@@ -3,13 +3,12 @@ import "../styles/EndOfRound.css";
 import { SocketContext } from "../context/SocketContext";
 import { PlayersContext } from "../context/PlayersConxtext";
 
-export default function EndOfRound() {
+export default function EndOfRound({ showResult, setShowResult }) {
   const [result, setResult] = useState(null);
-  const [showResult, setShowResult] = useState(false);
 
   const socket = useContext(SocketContext);
 
-  const { playersPlaying } = useContext(PlayersContext);
+  const { playersPlaying, currentPlayer } = useContext(PlayersContext);
 
   const displayWinner = () => {
     if (result) {
@@ -19,7 +18,14 @@ export default function EndOfRound() {
           (playerPlaying) => playerPlaying.id === result.winner
         )[0];
 
-        const victoryString = `${winner.name} venceu a rodada!`;
+        let victoryString;
+
+        if (winner.id !== currentPlayer.id)
+          victoryString = `${winner.name} venceu a rodada!`;
+        if (winner.id === currentPlayer.id)
+          victoryString = "Você venceu a rodada!";
+
+        console.log(victoryString);
         return victoryString;
       }
     }

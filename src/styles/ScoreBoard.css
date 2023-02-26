@@ -27,3 +27,18 @@
   gap: 1rem;
   align-items: center;
 }
+
+.name-div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.active-player-dot {
+  opacity: 0;
+}
+
+.active-player-dot.show {
+  opacity: 1;
+}

@@ -8,7 +8,7 @@ import { SocketContext } from "../context/SocketContext";
 
 // CONTINUAR COM AS CONDIÇÕES DE SAÍDA DE JOGADORES DA PARTIDA
 
-export default function GameBoard() {
+export default function GameBoard({ showResult }) {
   const [tiles, setTiles] = useState({
     area1: null,
     area2: null,
@@ -70,7 +70,9 @@ export default function GameBoard() {
         <div className='board'>
           <div
             className={`grid-container ${
-              !currentPlayerIsPlaying || !playersPlaying ? "denied" : ""
+              !currentPlayerIsPlaying || !playersPlaying || showResult
+                ? "denied"
+                : ""
             }`}
           >
             {Object.keys(tiles).map((tileKey) => {

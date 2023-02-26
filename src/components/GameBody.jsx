@@ -1,27 +1,31 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { PlayersContext } from "../context/PlayersConxtext";
 import { GameBoard, ScoreBoard, Chat } from ".";
 import "../styles/GameBody.css";
 import PlayersList from "./PlayersList";
-import ActivePlayerSpan from "./ActivePlayerSpan";
 import EndOfRound from "./EndOfRound";
 
 export default function GameBody() {
+  const [showResult, setShowResult] = useState(false);
+
   const { playersData, currentPlayer, activePlayer, playersPlaying } =
     useContext(PlayersContext);
 
   return (
     <div className={[`body ${currentPlayer ? "show" : ""}`]}>
-      <PlayersList players={playersData} />
+      <PlayersList players={playersData} activePlayer={activePlayer} />
       <div className='center'>
-        <EndOfRound />
-        <ActivePlayerSpan
-          players={playersData}
-          playerActive={activePlayer}
-          currentPlayer={currentPlayer}
-        />
-        {playersPlaying && <ScoreBoard playersPlaying={playersPlaying} />}
-        <GameBoard />
+        <EndOfRound showResult={showResult} setShowResult={setShowResult} />
+        <span className='playing'>{`${
+          playersData?.length < 2 ? "Aguardando jogadores" : ""
+        } `}</span>
+        {playersPlaying && (
+          <ScoreBoard
+            playersPlaying={playersPlaying}
+            activePlayer={activePlayer}
+          />
+        )}
+        <GameBoard showResult={showResult} />
       </div>
       <Chat />
     </div>

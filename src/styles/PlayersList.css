@@ -1,3 +1,19 @@
 .players-list {
   margin-left: 1rem;
+  font-size: 1.4rem;
+}
+
+.player-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.name-div-list {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
