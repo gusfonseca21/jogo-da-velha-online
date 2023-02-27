@@ -25,7 +25,6 @@ export default function EndOfRound({ showResult, setShowResult }) {
         if (winner.id === currentPlayer.id)
           victoryString = "Você venceu a rodada!";
 
-        console.log(victoryString);
         return victoryString;
       }
     }

@@ -42,11 +42,14 @@ export default function GameBoard({ showResult }) {
 
   const onMouseEnterLeaveHandler = (event, handler) => {
     let className;
-    if (handler === "enter")
-      className = `${event.target.children[0].className} hover`;
-    if (handler === "leave") className = "input-image";
 
     if (event.target.children.length) {
+      if (handler === "enter") {
+        className = `${event.target.children[0].className} hover`;
+      }
+      if (handler === "leave") {
+        className = "input-image";
+      }
       if (event.target.children[0]?.className === "input-image clicked") return;
       event.target.children[0].className = className;
     } else {
