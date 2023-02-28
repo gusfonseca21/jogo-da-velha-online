@@ -2,7 +2,7 @@ import { createContext } from "react";
 import io from "socket.io-client";
 
 const socket = io.connect(
-  "http://glitch.com/edit/#!/rolezeiros-jogo-da-velha-server"
+  "https://glitch.com/edit/#!/rolezeiros-jogo-da-velha-server"
 );
 
 export const SocketContext = createContext();
