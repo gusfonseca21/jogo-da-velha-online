@@ -20,10 +20,17 @@ export default function EndOfRound({ showResult, setShowResult }) {
 
         let victoryString;
 
-        if (winner.id !== currentPlayer.id)
-          victoryString = `${winner.name} venceu a rodada!`;
-        if (winner.id === currentPlayer.id)
-          victoryString = "Você venceu a rodada!";
+        if (result.gameWinner) {
+          if (winner.id !== currentPlayer.id)
+            victoryString = `${winner.name} venceu o jogo!`;
+          if (winner.id === currentPlayer.id)
+            victoryString = "Você venceu o jogo!";
+        } else {
+          if (winner.id !== currentPlayer.id)
+            victoryString = `${winner.name} venceu a rodada!`;
+          if (winner.id === currentPlayer.id)
+            victoryString = "Você venceu a rodada!";
+        }
 
         return victoryString;
       }
@@ -38,10 +45,6 @@ export default function EndOfRound({ showResult, setShowResult }) {
       setTimeout(() => {
         setShowResult(false);
       }, 3000);
-
-      setTimeout(() => {
-        setResult(null);
-      }, 10000);
     });
     return function cleanup() {
       socket.removeListener("end_of_round");

@@ -26,7 +26,7 @@ export default function ScoreBoard({ playersPlaying, activePlayer }) {
                 </span>
               </div>
             </div>
-            <span>{playerPlaying.roundScore}</span>
+            <span>{`Pontos: ${playerPlaying.roundScore}`}</span>
           </div>
         );
       })}

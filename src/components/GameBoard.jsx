@@ -43,12 +43,13 @@ export default function GameBoard({ showResult }) {
   const onMouseEnterLeaveHandler = (event, handler) => {
     let className;
     if (handler === "enter") {
-      className = `${event.target.children[0]?.className} hover`;
+      if (event.target.children.length) {
+        className = `${event.target.children[0].className} hover`;
+      }
     }
     if (handler === "leave") {
       className = "input-image";
     }
-
     if (event.target.children.length) {
       if (event.target.children[0]?.className === "input-image clicked") return;
       event.target.children[0].className = className;
@@ -81,6 +82,7 @@ export default function GameBoard({ showResult }) {
             {Object.keys(tiles).map((tileKey) => {
               return (
                 <div
+                  style={{ height: "10.35rem", width: "10.35rem" }}
                   key={tileKey}
                   className={tileKey}
                   onClick={() => onClickTileHandler(tileKey)}
@@ -93,6 +95,13 @@ export default function GameBoard({ showResult }) {
                 >
                   {playersPlaying && (
                     <img
+                      style={{
+                        position: "absolute",
+                        height: "8rem",
+                        left: "50%",
+                        top: "50%",
+                        transform: "translate(-50%, -50%)",
+                      }}
                       className={`input-image ${
                         tiles[tileKey] ? "clicked" : ""
                       }`}

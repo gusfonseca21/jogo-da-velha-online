@@ -10,6 +10,12 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
   color: white;
+  padding: 2rem;
+  align-self: flex-start;
+  background-color: #1e272e;
+  border: 2px solid white;
+  border-radius: 15px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .players-score {
