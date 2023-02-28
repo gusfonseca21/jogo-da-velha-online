@@ -1,3 +1,5 @@
 - Verificar o erro que dá no onMouseEnter da tabela do jogo (erro de className)
 - Se um jogador não logado sair, também aparecerá no chat. Remover isso.
-- Arrumar a função de troca de jogadores que estão jogando (lembrar de setar o jogador ativo também)
+- Arrumar a função de troca de jogadores que estão jogando (problemas na segunda partida)
+- Investigar texto de vitória de rodada que não aparece
+- Investigar bug na imagem de input dos jogadores exageradamente grande
