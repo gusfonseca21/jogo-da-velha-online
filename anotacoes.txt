@@ -1,4 +1,0 @@
-- adicionar sons
-- adicionar responsividade (principalmente para celulares)
-- O terceiro jogador não está vendo o placar 
-- Verificar situações em que o servidor para de funcionar
