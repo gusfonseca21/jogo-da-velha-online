@@ -8,16 +8,8 @@ import "../styles/LoginModal.css";
 import { Avatar } from ".";
 import { PlayersContext } from "../context/PlayersConxtext";
 import { SocketContext } from "../context/SocketContext";
-import ReactAudioPlayer from "react-audio-player";
-
-import loginEnter from "../assets/sounds/success.wav";
-import avatarBackward from "../assets/sounds/change-avatar-reverse.mp3";
-import avatarForward from "../assets/sounds/change-avatar.mp3";
 
 export default function LoginModal({ loginModal, setLoginModal }) {
-  const [avatarForwardAudio, setAvatarForwardAudio] = useState(false);
-  const [avatarBackwardAudio, setAvatarBackwardAudio] = useState(false);
-
   const playersCtx = useContext(PlayersContext);
   const avatars = playersCtx.avatars;
 
@@ -54,51 +46,20 @@ export default function LoginModal({ loginModal, setLoginModal }) {
 
   return (
     <>
-      {!loginModal && (
-        <ReactAudioPlayer volume={0.8} src={loginEnter} autoPlay />
-      )}
       <div className={`login-form ${!loginModal && "hide"}`}>
         <h2 className='heading'>Faça seu login e comece a jogar!</h2>
         <div className='card'>
           <div className='avatar'>
             <div className='avatar-choice'>
-              <div
-                className='arrow-buttons'
-                onClick={() => {
-                  setAvatarBackwardAudio(true);
-                  changeAvatar(-1);
-                }}
-              >
+              <div className='arrow-buttons' onClick={() => changeAvatar(-1)}>
                 <Icon icon={chevronLeft} color='silver' height={80} />
-                {avatarBackwardAudio && (
-                  <ReactAudioPlayer
-                    volume={0.8}
-                    src={avatarBackward}
-                    autoPlay
-                    onEnded={() => setAvatarBackwardAudio(false)}
-                  />
-                )}
               </div>
               <Avatar
                 avatarChanged={avatarChanged}
                 selectedAvatar={selectedAvatar}
                 login
               />
-              <div
-                className='arrow-buttons'
-                onClick={() => {
-                  setAvatarForwardAudio(true);
-                  changeAvatar(1);
-                }}
-              >
-                {avatarForwardAudio && (
-                  <ReactAudioPlayer
-                    volume={0.8}
-                    src={avatarForward}
-                    autoPlay
-                    onEnded={() => setAvatarForwardAudio(false)}
-                  />
-                )}
+              <div className='arrow-buttons' onClick={() => changeAvatar(1)}>
                 <Icon icon={chevronRight} color='silver' height={80} />
               </div>
             </div>

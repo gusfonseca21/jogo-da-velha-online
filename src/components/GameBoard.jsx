@@ -3,24 +3,8 @@ import X from "../assets/images/X.svg";
 import O from "../assets/images/O.svg";
 import "../styles/GameBoard.css";
 import { useContext } from "react";
-import ReactAudioPlayer from "react-audio-player";
 import { PlayersContext } from "../context/PlayersConxtext";
 import { SocketContext } from "../context/SocketContext";
-
-import userInputX from "../assets/sounds/click.wav";
-import userInputO from "../assets/sounds/metronome.flac";
-
-const compareTiles = (oldTiles, newTiles) => {
-  const diff = [];
-
-  for (const key in oldTiles) {
-    if (oldTiles[key] !== newTiles[key]) {
-      diff.push(newTiles[key]);
-    }
-  }
-
-  return diff.length > 0 ? diff[0]?.toString() : null;
-};
 
 export default function GameBoard({ showResult }) {
   const [tiles, setTiles] = useState({
@@ -34,9 +18,6 @@ export default function GameBoard({ showResult }) {
     area8: null,
     area9: null,
   });
-  const [inputAudio, setInputAudio] = useState(false);
-  const [inputtedAudio, setInputtedAudio] = useState(userInputX);
-
   const { playersPlaying, activePlayer, currentPlayer } =
     useContext(PlayersContext);
 
@@ -50,11 +31,6 @@ export default function GameBoard({ showResult }) {
 
     if (updatedTiles[tileKey]) return;
     updatedTiles[tileKey] = currentPlayer.id;
-
-    if (currentPlayer.id === playersPlaying[0].id) setInputtedAudio(userInputX);
-    if (currentPlayer.id === playersPlaying[1].id) setInputtedAudio(userInputO);
-
-    setInputAudio(true);
     setTiles(updatedTiles);
 
     socket.emit("player_input", updatedTile);
@@ -81,29 +57,15 @@ export default function GameBoard({ showResult }) {
 
   useEffect(() => {
     socket.on("update_tiles", (serverTiles) => {
-      const updatedTile = compareTiles(tiles, serverTiles);
-
-      if (updatedTile === playersPlaying[0].id) setInputtedAudio(userInputX);
-      if (updatedTile === playersPlaying[1].id) setInputtedAudio(userInputO);
-
-      setInputAudio(true);
       setTiles(serverTiles);
     });
     return function cleanup() {
       socket.removeListener("update_tiles");
     };
-  }, [socket, tiles]);
+  }, [socket]);
 
   return (
     <div className='game-board'>
-      {inputAudio && (
-        <ReactAudioPlayer
-          volume={1}
-          src={inputtedAudio}
-          autoPlay
-          onEnded={() => setInputAudio(false)}
-        />
-      )}
       {currentPlayer && (
         <div className='board'>
           <div
